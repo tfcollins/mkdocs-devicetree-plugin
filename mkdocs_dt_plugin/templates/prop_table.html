@@ -1,0 +1,28 @@
+{% block content %}
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Info</th>
+    </tr>
+    {% for d in data.properties %}
+    <tr>
+        <td>{{ d }}</td>
+        {% if 'type' in data.properties[d] %}
+        <td>{{ data.properties[d]['type'] }}</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+        <td>{{ data.properties[d]['required'] }}</td>
+        {% if 'description' in data.properties[d] %}
+        <td>{{ data.properties[d]['description'] }}</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
