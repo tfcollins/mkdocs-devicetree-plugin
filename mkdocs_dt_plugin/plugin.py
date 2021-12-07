@@ -7,6 +7,7 @@ from mkdocs.plugins import BasePlugin
 
 import yaml
 from jinja2 import Environment, FileSystemLoader
+import re
 
 
 class DeviceTreePlugin(BasePlugin):
@@ -49,6 +50,31 @@ class DeviceTreePlugin(BasePlugin):
 
         with open(filename, "r") as stream:
             data = yaml.safe_load(stream)
+
+        if "description" in data:
+            # replace link
+            dec = data["description"]
+            alls = []
+            for s in dec.split(" "):
+                if s.startswith("http"):
+                    print(s)
+                    v = s.split("/")[-1]
+                    if "." in v:
+                        v = v.split(".")[0]
+                    s = s.replace(s, f"<a href='{s}'>{v}</a>")
+                alls.append(s)
+
+            dec = " ".join(alls)
+            alls = []
+            for s in dec.split("\n"):
+                if s.startswith("http"):
+                    print(s)
+                    v = s.split("/")[-1]
+                    if "." in v:
+                        v = v.split(".")[0]
+                    s = s.replace(s, f"<a href='{s}'>{v}</a>")
+                alls.append(s)
+            data["description"] = " ".join(alls)
 
         # Update required
         rq = data["required"]
